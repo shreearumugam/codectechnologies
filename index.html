@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credential Verification - Codec Technologies</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter for UI, Montserrat for wide-tracked subtext -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Centered Verification Card matching reference screenshot */
+        .verification-card {
+            max-width: 615px;
+            width: 100%;
+            background: #ffffff;
+            border: 1px solid #eef2f6;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(15, 23, 42, 0.035);
+            padding: 36px 36px 40px;
+        }
+
+        @media (max-width: 640px) {
+            .verification-card {
+                padding: 28px 22px 32px;
+            }
+        }
+
+        /* Verification Code Input */
+        .code-input {
+            flex: 1;
+            height: 44px;
+            padding: 0 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #0f172a;
+            background-color: #ffffff;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .code-input:focus {
+            outline: none;
+            border-color: #1d63dc;
+            box-shadow: 0 0 0 3px rgba(29, 99, 220, 0.12);
+        }
+
+        /* Blue Verify Button with double-ring border style matching reference */
+        .verify-btn {
+            height: 42px;
+            padding: 0 20px;
+            background-color: #1d63dc;
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 14.5px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid #ffffff;
+            outline: 2px solid #0f172a;
+            transition: background-color 0.15s ease, transform 0.05s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+        }
+
+        .verify-btn:hover {
+            background-color: #1552bd;
+        }
+
+        .verify-btn:active {
+            transform: scale(0.99);
+        }
+
+        .verify-btn:disabled {
+            opacity: 0.75;
+            cursor: not-allowed;
+        }
+
+        /* Smooth fade-in animation for verification result */
+        @keyframes fadeInResult {
+            from {
+                opacity: 0;
+                transform: translateY(4px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-animate {
+            animation: fadeInResult 0.2s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-start justify-center pt-16 sm:pt-28 px-4 pb-12">
+
+    <!-- Main Centered Verification Card -->
+    <main class="verification-card">
+        
+        <!-- CODEC TECHNOLOGIES Company Logo Lockup -->
+        <div class="flex items-center gap-3.5 mb-2.5 select-none">
+            <!-- Exact Tilted Globe + Extending Orbital Ellipse Icon -->
+            <svg class="w-[74px] h-[64px] shrink-0" viewBox="0 0 84 84" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="globeGrad" x1="15%" y1="10%" x2="85%" y2="90%">
+                        <stop offset="0%" stop-color="#00b4ff" />
+                        <stop offset="45%" stop-color="#0097e6" />
+                        <stop offset="100%" stop-color="#1669d8" />
+                    </linearGradient>
+                </defs>
+                <!-- All 3 geometric shapes tilted together at +19 degrees clockwise -->
+                <g transform="rotate(19 42 42)" stroke="url(#globeGrad)" stroke-width="3.6" fill="none" stroke-linecap="round">
+                    <!-- Main outer sphere circle -->
+                    <circle cx="42" cy="42" r="28" />
+                    <!-- Inner vertical meridian ellipse (two internal longitude lines meeting at top-right and bottom-left poles) -->
+                    <ellipse cx="42" cy="42" rx="11.5" ry="28" />
+                    <!-- Extending orbital ring / latitude ellipse (extending past left and right sphere edges) -->
+                    <ellipse cx="42" cy="42" rx="39" ry="11.5" />
+                </g>
+            </svg>
+
+            <!-- Custom Typography Lockup for CODEC TECHNOLOGIES -->
+            <div class="flex flex-col justify-center">
+                <!-- "CODEC" Custom Geometric Letterforms -->
+                <svg class="h-[31px] sm:h-[33px] w-auto" viewBox="0 0 232 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Letter C -->
+                    <path d="M 31 6.5 H 12.5 C 7.8 6.5 5 9.3 5 14 V 32 C 5 36.7 7.8 39.5 12.5 39.5 H 31" 
+                          stroke="#df4a62" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round" />
+                    
+                    <!-- Letter O -->
+                    <rect x="48" y="6.5" width="31" height="33" rx="7.5" 
+                          stroke="#df4a62" stroke-width="6.8" stroke-linejoin="round" />
+                    
+                    <!-- Letter D -->
+                    <path d="M 98 6.5 H 116.5 C 124 6.5 129 11.2 129 18.5 V 27.5 C 129 34.8 124 39.5 116.5 39.5 H 98 V 6.5 Z" 
+                          stroke="#df4a62" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round" />
+                    
+                    <!-- Letter E (Detached floating top bar + rounded bottom loop with thick middle bar) -->
+                    <rect x="144.5" y="3.1" width="33.5" height="6.8" rx="2.4" fill="#df4a62" />
+                    <path d="M 174.5 22.5 H 148 V 32 C 148 36.5 151.2 39.5 156 39.5 H 174.5" 
+                          stroke="#df4a62" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round" />
+                    <rect x="144.6" y="18.8" width="33.4" height="7.4" rx="2.2" fill="#df4a62" />
+
+                    <!-- Letter C -->
+                    <path d="M 220 6.5 H 201.5 C 196.8 6.5 194 9.3 194 14 V 32 C 194 36.7 196.8 39.5 201.5 39.5 H 220" 
+                          stroke="#df4a62" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+
+                <!-- "TECHNOLOGIES" Wide-Tracked Subtext extending slightly past the second 'C' -->
+                <div class="mt-1.5 pl-[1px]">
+                    <span style="font-family: 'Montserrat', sans-serif; display: inline-block; transform: scaleX(1.16); transform-origin: left center;" 
+                          class="text-[10px] sm:text-[10.8px] font-medium tracking-[0.34em] text-[#df4a62] uppercase leading-none">
+                        TECHNOLOGIES
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Heading & Subtitle -->
+        <h1 class="text-[26px] font-bold text-[#0f172a] tracking-[-0.01em] leading-tight mt-[12px] mb-[10px]">
+            Credential verification
+        </h1>
+        <p class="text-[14.5px] text-[#334155] mb-[18px]">
+            Check an offer letter, certificate, recommendation, or intern ID.
+        </p>
+
+        <!-- Verification Code Form -->
+        <form id="verifyForm" onsubmit="handleVerifySubmit(event)" novalidate>
+            <label for="verificationCodeInput" class="block text-[13.5px] font-medium text-[#1e293b] mb-[8px]">
+                Verification code
+            </label>
+            <div class="flex items-center gap-[10px]">
+                <input 
+                    type="text" 
+                    id="verificationCodeInput" 
+                    class="code-input"
+                    value="bdd0c2124206c43cebb6c990e9ad518848b901a8cc2aa31434471d412209ef6f"
+                    placeholder="Enter verification code"
+                    autocomplete="off"
+                    spellcheck="false"
+                />
+                <button type="submit" id="verifyBtn" class="verify-btn">
+                    Verify
+                </button>
+            </div>
+        </form>
+
+        <!-- Result Container (Shown when clicking Verify) -->
+        <div id="resultSection" class="hidden" aria-live="polite"></div>
+
+    </main>
+
+    <script>
+        // Credential Constants for Shree A
+        const TARGET_CREDENTIAL = "bdd0c2124206c43cebb6c990e9ad518848b901a8cc2aa31434471d412209ef6f";
+        const CREDENTIAL_DETAILS = {
+            certificateId: "CT-CERT-2026-BDD0C2124206C43C",
+            recipientName: "Shree A",
+            domain: "Web Developer Intern",
+            type: "certificate",
+            issuedDate: "11 Oct 2026"
+        };
+
+        const inputElement = document.getElementById("verificationCodeInput");
+        const verifyButton = document.getElementById("verifyBtn");
+        const resultContainer = document.getElementById("resultSection");
+
+        // Ensure the input is pre-filled with the exact credential hash whenever the page opens
+        window.addEventListener("DOMContentLoaded", () => {
+            inputElement.value = TARGET_CREDENTIAL;
+        });
+
+        function handleVerifySubmit(event) {
+            event.preventDefault();
+
+            const enteredCode = inputElement.value.trim();
+
+            // Subtle button state feedback
+            verifyButton.disabled = true;
+            verifyButton.textContent = "Verify";
+
+            setTimeout(() => {
+                verifyButton.disabled = false;
+                renderVerificationResult(enteredCode);
+            }, 150);
+        }
+
+        function renderVerificationResult(code) {
+            resultContainer.classList.remove("hidden");
+            resultContainer.classList.remove("result-animate");
+            void resultContainer.offsetWidth;
+            resultContainer.classList.add("result-animate");
+
+            if (code.toLowerCase() === TARGET_CREDENTIAL.toLowerCase()) {
+                resultContainer.innerHTML = `
+                    <h2 class="text-[18px] font-bold text-[#0f172a] mt-[22px] mb-[12px]">
+                        Valid credential
+                    </h2>
+                    <p class="text-[14px] text-[#334155] mb-[12px]">
+                        ${CREDENTIAL_DETAILS.certificateId}
+                    </p>
+                    <p class="text-[14px] text-[#0f172a] mb-[12px]">
+                        ${CREDENTIAL_DETAILS.recipientName} &middot; ${CREDENTIAL_DETAILS.domain}
+                    </p>
+                    <p class="text-[14px] text-[#0f172a]">
+                        ${CREDENTIAL_DETAILS.type} &middot; Issued ${CREDENTIAL_DETAILS.issuedDate}
+                    </p>
+                `;
+            } else {
+                resultContainer.innerHTML = `
+                    <h2 class="text-[18px] font-bold text-[#dc2626] mt-[22px] mb-[8px]">
+                        Invalid credential
+                    </h2>
+                    <p class="text-[14px] text-[#475569] mb-[10px]">
+                        No matching credential found for the verification code entered.
+                    </p>
+                    <button 
+                        type="button" 
+                        onclick="restoreDefaultCredential()"
+                        class="text-[13px] font-medium text-[#1d63dc] hover:underline focus:outline-none"
+                    >
+                        Reset to Shree A's credential code
+                    </button>
+                `;
+            }
+        }
+
+        function restoreDefaultCredential() {
+            inputElement.value = TARGET_CREDENTIAL;
+            renderVerificationResult(TARGET_CREDENTIAL);
+        }
+    </script>
+</body>
+</html>
